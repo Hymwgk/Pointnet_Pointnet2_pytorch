@@ -10,6 +10,7 @@ class get_model(nn.Module):
         self.sa2 = PointNetSetAbstraction(256, 0.2, 32, 64 + 3, [64, 64, 128], False)
         self.sa3 = PointNetSetAbstraction(64, 0.4, 32, 128 + 3, [128, 128, 256], False)
         self.sa4 = PointNetSetAbstraction(16, 0.8, 32, 256 + 3, [256, 256, 512], False)
+        #
         self.fp4 = PointNetFeaturePropagation(768, [256, 256])
         self.fp3 = PointNetFeaturePropagation(384, [256, 256])
         self.fp2 = PointNetFeaturePropagation(320, [256, 128])
@@ -27,10 +28,13 @@ class get_model(nn.Module):
         l2_xyz, l2_points = self.sa2(l1_xyz, l1_points)
         l3_xyz, l3_points = self.sa3(l2_xyz, l2_points)
         l4_xyz, l4_points = self.sa4(l3_xyz, l3_points)
-
+        #注意这里，l3_points特征 被利用l4_points（高层特征）重新“还原”
+        #此时l3_points已经和之前的l3_points不相同了，原来的l3_points仅仅具有它之前层的group的特征
+        #现在的l3_points由于是由l4_points插值而来，具有了其他group的特征，更加“全局化”
         l3_points = self.fp4(l3_xyz, l4_xyz, l3_points, l4_points)
         l2_points = self.fp3(l2_xyz, l3_xyz, l2_points, l3_points)
         l1_points = self.fp2(l1_xyz, l2_xyz, l1_points, l2_points)
+        #这样一层一层还原之后，每个场景点拼接用的特征向量，都包含有了全局的特征
         l0_points = self.fp1(l0_xyz, l1_xyz, None, l1_points)
 
         x = self.drop1(F.relu(self.bn1(self.conv1(l0_points))))

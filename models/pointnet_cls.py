@@ -1,6 +1,7 @@
 import torch.nn as nn
 import torch.utils.data
 import torch.nn.functional as F
+#将子模块的网络导入进来
 from pointnet_utils import PointNetEncoder, feature_transform_reguliarzer
 
 class get_model(nn.Module):

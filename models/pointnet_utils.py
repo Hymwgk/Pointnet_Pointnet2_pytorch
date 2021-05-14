@@ -5,7 +5,7 @@ import torch.utils.data
 from torch.autograd import Variable
 import numpy as np
 import torch.nn.functional as F
-
+#这里是PointNet的一些子模块的实现，比如里面的3D变换网络的实现等等
 
 class STN3d(nn.Module):
     def __init__(self, channel):

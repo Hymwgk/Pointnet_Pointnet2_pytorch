@@ -136,7 +136,6 @@ def main(args):
     testDataLoader = torch.utils.data.DataLoader(test_dataset, batch_size=args.batch_size, shuffle=False, num_workers=1)
 
     '''MODEL LOADING'''
-    #分类数量
     num_class = args.num_category
     #这里默认导入pointnet2_cls_msg.py文件，语法的使用 https://www.bilibili.com/read/cv5891176/
     model = importlib.import_module(args.model)
@@ -196,7 +195,7 @@ def main(args):
         for batch_id, (points, target) in tqdm(enumerate(trainDataLoader, 0), total=len(trainDataLoader), smoothing=0.9):
             optimizer.zero_grad()
 
-            #获取到一个batch的数据,形状是(batch_size, 点数=1024, channel)
+            #获取到一个batch的数据,形状是(batch_size,点数=1024,channel)
             points = points.data.numpy()
             #print(points.shape)
             points = provider.random_point_dropout(points)

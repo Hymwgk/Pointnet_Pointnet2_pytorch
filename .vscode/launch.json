@@ -1,0 +1,24 @@
+{
+    // 使用 IntelliSense 了解相关属性。 
+    // 悬停以查看现有属性的描述。
+    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "pointnet2_cls_ssg_train",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/train_classification.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--model",
+                "pointnet2_cls_ssg",
+                "--log_dir",
+                "pointnet2_cls_ssg",
+                //"--process_data",
+                "--batch_size",
+                "8"
+            ]   
+        }
+    ]
+}
